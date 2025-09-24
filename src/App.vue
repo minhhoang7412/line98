@@ -23,6 +23,8 @@ interface History {
 const ROW = 9
 const COL = 9
 const STREAK = 5
+const LOCALSTORAGE_BOARD = "line98.board"
+const LOCALSTORAGE_SCORE = "line98.score"
 
 // const board = ref<(Ball | null)[][]>([[]])
 const round = ref<number>(0)
@@ -327,7 +329,30 @@ watch(removingBall, () => {
       setBoardValue(gameboard.value, ball.position, null)
     }
     removingBall.value = []
+    localStorage.setItem(LOCALSTORAGE_BOARD, JSON.stringify(gameboard.value))
+    console.warn('after');
+    
   }, 500);
+})
+
+watch(gameboard, () => {
+  const boardString = localStorage.getItem(LOCALSTORAGE_BOARD)
+  const score = localStorage.getItem(LOCALSTORAGE_SCORE)
+  if (boardString) {
+    const balls = JSON.parse(boardString)
+    history.value.push({ board: balls, score: Number(score) })
+    round.value = 0
+  }
+
+}, { immediate: true, once: true })
+
+watch([gameboard, score], () => {
+  // console.warn(JSON.stringify(gameboard.value));
+  
+  localStorage.setItem(LOCALSTORAGE_BOARD, JSON.stringify(gameboard.value))
+  localStorage.setItem(LOCALSTORAGE_SCORE, JSON.stringify(score.value))
+  console.warn('before');
+  
 })
 
 //restart()
@@ -360,22 +385,6 @@ watch(removingBall, () => {
       </div>
     </div>
   </div>
-
-  <!-- <div> {{ score }}</div>
-  <button :disabled="round <= 0" @click="undo">Undo</button>
-  <button :disabled="round >= history.length - 1" @click="redo">Redo</button>
-  <div class="gameboard-container">
-    <template v-for="(row, i) in gameboard">
-      <div v-for="(ball, j) in row" class="cell" @click="playRound(i, j)">
-        <div v-if="ball !== null" class="ball" :class="[
-          { 'next-round': ball.isNextRound },
-          ball.color,
-          { selectedBall: i === selectedBall?.position?.row && j === selectedBall.position.col }]">
-        </div>
-      </div>
-    </template>
-</div>
-<button @click="restart">restart</button> -->
 </template>
 
 <style scoped>
@@ -392,8 +401,6 @@ watch(removingBall, () => {
   align-items: center;
   gap: 20px;
 }
-
-.game-header {}
 
 .score {
   font-size: 24px;
@@ -554,37 +561,6 @@ watch(removingBall, () => {
   .ball.selectedBall {
     border: 3px solid white;
     transform: scale(1.4);
-  }
-
-  .game-container {
-    /* padding: 20px; */
-    /* margin: 5px; */
-    /* border-radius: 15px; */
-    /* gap: 15px */
-  }
-
-  /* .game-board {
-    max-width: 600px;
-    max-height: 600px;
-  } */
-
-  /* .game-header {
-    margin-bottom: 15px;
-  } */
-
-  .score {
-    /* font-size: 20px; */
-  }
-
-  .controls {
-    /* font-size: 12px; */
-    /* margin-top: 15px; */
-  }
-
-  .btn {
-    /* padding: 12px 24px; */
-    /* font-size: 16px; */
-    /* margin-top: 15px; */
   }
 }
 
