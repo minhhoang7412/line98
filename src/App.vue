@@ -383,27 +383,17 @@ watch(removingBall, () => {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   border-radius: 20px;
-  padding: 20px;
+  padding: 20px 30px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  /* width: 100%; */
-  /* height: 100%; */
-  width: min(95vw, 95vh, 700px);
-  height: min(95vw, 95vh, 700px);
-  /* height: 100vw; */
   overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 20px;
 }
 
-.game-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  padding: 0 10px;
-}
+.game-header {}
 
 .score {
   font-size: 24px;
@@ -416,8 +406,8 @@ watch(removingBall, () => {
   gap: 2px;
   /* grid-template-columns: repeat(v-bind(COL), 50px);
   grid-template-rows: repeat(v-bind(ROW), 50px); */
-  grid-template-columns: repeat(9, 1fr);
-  grid-template-rows: repeat(9, 1fr);
+  grid-template-columns: repeat(9, clamp(20px, 9vmin, 50px));
+  grid-template-rows: repeat(9, clamp(20px, 9vmin, 50px));
   justify-content: center;
 
   background: rgba(0, 0, 0, 0.2);
@@ -426,14 +416,6 @@ watch(removingBall, () => {
   border: 2px solid rgba(255, 255, 255, 0.2);
   /* max-width: 100%; */
   overflow: hidden;
-  
-  /* width: 90vmin; */
-  /* height: 90vmin; */
-  aspect-ratio: 1 / 1;
-  align-items: stretch;
-  justify-items: stretch;
-  overflow: hidden;
-  flex: 1;
 }
 
 .cell {
@@ -509,7 +491,8 @@ watch(removingBall, () => {
 }
 
 .controls {
-  margin-top: 20px;
+  align-self: stretch;
+  /* margin-top: 20px; */
   font-size: 14px;
   display: flex;
   justify-content: space-between;
@@ -558,10 +541,26 @@ watch(removingBall, () => {
 }
 
 @media (max-width: 768px) {
+  .ball {
+    width: 75%;
+    height: 75%;
+  }
+
+  .next-round {
+    width: 40%;
+    height: 40%;
+  }
+
+  .ball.selectedBall {
+    border: 3px solid white;
+    transform: scale(1.4);
+  }
+
   .game-container {
-    padding: 15px;
-    margin: 5px;
-    border-radius: 15px;
+    /* padding: 20px; */
+    /* margin: 5px; */
+    /* border-radius: 15px; */
+    /* gap: 15px */
   }
 
   /* .game-board {
@@ -569,30 +568,31 @@ watch(removingBall, () => {
     max-height: 600px;
   } */
 
-  .game-header {
+  /* .game-header {
     margin-bottom: 15px;
-  }
+  } */
 
   .score {
-    font-size: 20px;
+    /* font-size: 20px; */
   }
 
   .controls {
-    font-size: 12px;
-    margin-top: 15px;
+    /* font-size: 12px; */
+    /* margin-top: 15px; */
   }
 
   .btn {
-    padding: 12px 24px;
-    font-size: 16px;
-    margin-top: 15px;
+    /* padding: 12px 24px; */
+    /* font-size: 16px; */
+    /* margin-top: 15px; */
   }
 }
 
 @media (max-width: 480px) {
   .game-container {
-    padding: 10px;
+    padding: 15px;
     border-radius: 10px;
+    gap: 10px;
   }
 
   .score {
@@ -604,16 +604,22 @@ watch(removingBall, () => {
   }
 
 
+  .next-round {
+    width: 45%;
+    height: 45%;
+  }
+
   .ball {
+    width: 85%;
+    height: 85%;
     box-shadow:
       inset 3px 3px 6px rgba(255, 255, 255, 0.3),
       inset -3px -3px 6px rgba(0, 0, 0, 0.3),
       0 2px 4px rgba(0, 0, 0, 0.3);
   }
 
-  .next-round {
-    width: 40%;
-    height: 40%;
+  .ball.selectedBall {
+    transform: scale(1.3);
   }
 
   .controls {
